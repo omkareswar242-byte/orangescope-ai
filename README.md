@@ -44,7 +44,13 @@ The original **Orange Dataset.zip** contained 1,090 images:
 | grenning | 347 | 22 | 369 |
 | **Total** | **991** | **99** | **1,090** |
 
-I split the original training images further into train and validation groups (816 and 175). The original **99 test images** were kept separate until evaluation. The project ZIP contains the saved trained models and a sample image, but **does not include the entire dataset** because it is much larger. You only need the full dataset to retrain.
+I split the original training images further into train and validation groups (816 and 175). The original **99 test images** were kept separate until evaluation. The GitHub project is intended to track the **individual source images** under `data/raw/train/` and `data/raw/test/` so training is reproducible. The original 139 MB ZIP itself should **not** be committed. To import it and generate a per-image SHA-256 manifest, run:
+
+```bash
+python prepare_dataset.py "C:/Users/YOUR_NAME/Downloads/Orange Dataset.zip"
+```
+
+This verifies exactly 1,090 images and writes `data/orange_dataset_manifest.csv`. Use GitHub Desktop to commit and push the extracted photos after checking that you have permission to publish the provided dataset.
 
 ## 3. Results (real results from the saved original training run)
 
