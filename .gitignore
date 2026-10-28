@@ -5,9 +5,10 @@ __pycache__/
 venv/
 .ipynb_checkpoints/
 .pytest_cache/
-# Large source images are provided separately
-data/raw/*
-!data/raw/.gitkeep
+# Individual training/test images under data/raw/ are tracked for reproducibility.
+# Do not commit the original 139 MB ZIP archive.
+/Orange Dataset.zip
+data/raw/*.zip
 # Local editor settings
 .vscode/
 .idea/
