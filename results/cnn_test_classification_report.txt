@@ -1,0 +1,10 @@
+              precision    recall  f1-score   support
+
+   blackspot       0.81      1.00      0.90        22
+      canker       1.00      0.77      0.87        22
+       fresh       1.00      1.00      1.00        33
+    grenning       1.00      1.00      1.00        22
+
+    accuracy                           0.95        99
+   macro avg       0.95      0.94      0.94        99
+weighted avg       0.96      0.95      0.95        99

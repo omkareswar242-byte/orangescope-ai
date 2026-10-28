@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrangeScope | Orange Image Classification</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="/static/app.js" defer></script>
+</head>
+<body>
+    <header class="header">
+        <div class="container nav">
+            <a href="#home" class="logo"><span>🍊</span> OrangeScope <small>AI</small></a>
+            <nav>
+                <a href="#predict">Predict</a>
+                <a href="#results">Results</a>
+                <a href="#dataset">Dataset</a>
+                <a href="#about">About</a>
+            </nav>
+            <span class="status" id="server-status">Checking models...</span>
+        </div>
+    </header>
+
+    <main id="home" class="container">
+        <section class="hero">
+            <div>
+                <span class="eyebrow">COMPUTER VISION PROJECT</span>
+                <h1>Orange condition<br><span>classification.</span></h1>
+                <p>Upload an orange photo and compare predictions from two different methods: a Support Vector Machine and a Convolutional Neural Network.</p>
+                <a href="#predict" class="btn btn-main">Try the classifier →</a>
+            </div>
+            <div class="hero-picture" aria-hidden="true">
+                <div class="fruit">🍊</div>
+                <div class="floating-tag">SVM + CNN</div>
+            </div>
+        </section>
+
+        <section class="stats" aria-label="Project statistics">
+            <div class="stat"><span>Dataset images</span><strong id="image-count">—</strong></div>
+            <div class="stat"><span>Orange categories</span><strong>4</strong></div>
+            <div class="stat"><span>Test accuracy · SVM</span><strong id="top-svm">—</strong></div>
+            <div class="stat"><span>Test accuracy · CNN</span><strong id="top-cnn">—</strong></div>
+        </section>
+
+        <section id="predict" class="section">
+            <div class="section-heading">
+                <span class="eyebrow">01 / LIVE DEMO</span>
+                <h2>Test an orange image</h2>
+                <p>Select a photo or use the sample image included in the project.</p>
+            </div>
+            <div class="demo-grid">
+                <div class="panel">
+                    <div class="panel-title"><h3>Input image</h3><span>JPG, PNG, WEBP</span></div>
+                    <div class="upload-area" id="drop-area">
+                        <input type="file" id="image-input" accept="image/jpeg,image/png,image/webp" hidden>
+                        <div id="upload-placeholder">
+                            <div class="upload-icon">↑</div>
+                            <h3>Choose an image</h3>
+                            <p>Click here or drag a file into this area</p>
+                            <small>Maximum file size: 8 MB</small>
+                        </div>
+                        <img id="image-preview" class="hidden" alt="Preview of uploaded orange">
+                    </div>
+                    <p id="file-name" class="file-name">No image selected</p>
+                    <div class="button-row">
+                        <button id="predict-button" class="btn btn-main" disabled>Predict condition</button>
+                        <button id="sample-button" class="btn btn-light">Use sample</button>
+                        <button id="clear-button" class="btn btn-plain">Clear</button>
+                    </div>
+                    <p class="help-text">The image is processed by Flask on your computer. It is not saved.</p>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-title"><h3>Prediction</h3><span>2 APPROACHES</span></div>
+                    <div id="empty-state" class="empty-state">
+                        <div>🔎</div>
+                        <h3>No prediction yet</h3>
+                        <p>Choose an image to see the SVM and CNN results.</p>
+                    </div>
+                    <div id="prediction-results" class="hidden">
+                        <div id="agreement" class="agreement"></div>
+                        <div class="prediction-card">
+                            <div class="prediction-top"><strong>Approach 1: SVM</strong><span>Selected model</span></div>
+                            <div class="prediction-value"><strong id="svm-label">—</strong><span id="svm-score">—</span></div>
+                            <div class="bars" id="svm-bars"></div>
+                        </div>
+                        <div class="prediction-card">
+                            <div class="prediction-top"><strong>Approach 2: CNN</strong><span>Deep learning</span></div>
+                            <div class="prediction-value"><strong id="cnn-label">—</strong><span id="cnn-score">—</span></div>
+                            <div class="bars" id="cnn-bars"></div>
+                        </div>
+                        <p class="help-text">These scores are not calibrated probabilities or confirmed disease diagnoses.</p>
+                    </div>
+                    <div id="error-message" class="error hidden" role="alert"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="results" class="section">
+            <div class="section-heading">
+                <span class="eyebrow">02 / MODEL COMPARISON</span>
+                <h2>How did the models perform?</h2>
+                <p>Both models were tested using the same 99 separate images. The best model was selected with validation macro F1.</p>
+            </div>
+            <div class="metrics-grid">
+                <div class="panel metric-panel">
+                    <div class="metric-header"><h3>SVM</h3><span class="tag">Selected</span></div>
+                    <strong class="big-metric" id="svm-accuracy">—</strong>
+                    <p>Test accuracy</p>
+                    <div class="metric-row"><span>Macro F1</span><strong id="svm-f1">—</strong></div>
+                    <div class="metric-row"><span>Precision</span><strong id="svm-precision">—</strong></div>
+                    <div class="metric-row"><span>Recall</span><strong id="svm-recall">—</strong></div>
+                </div>
+                <div class="panel metric-panel">
+                    <div class="metric-header"><h3>CNN</h3><span class="tag muted">Comparison</span></div>
+                    <strong class="big-metric" id="cnn-accuracy">—</strong>
+                    <p>Test accuracy</p>
+                    <div class="metric-row"><span>Macro F1</span><strong id="cnn-f1">—</strong></div>
+                    <div class="metric-row"><span>Precision</span><strong id="cnn-precision">—</strong></div>
+                    <div class="metric-row"><span>Recall</span><strong id="cnn-recall">—</strong></div>
+                </div>
+            </div>
+            <div class="charts-grid">
+                <div class="panel chart-panel"><h3>SVM confusion matrix</h3><img src="/api/plot/svm_confusion" alt="SVM test confusion matrix"></div>
+                <div class="panel chart-panel"><h3>CNN confusion matrix</h3><img src="/api/plot/cnn_confusion" alt="CNN test confusion matrix"></div>
+            </div>
+        </section>
+
+        <section id="dataset" class="section">
+            <div class="section-heading">
+                <span class="eyebrow">03 / DATASET</span>
+                <h2>Understanding the images</h2>
+                <p>Class counts, imbalance, and possible data problems are important when comparing the models.</p>
+            </div>
+            <div class="demo-grid">
+                <div class="panel"><h3>Image count by category</h3><div id="class-counts" class="class-counts"></div></div>
+                <div class="panel notes">
+                    <h3>What I observed</h3>
+                    <p><strong>Imbalance:</strong> Some conditions have more images than others.</p>
+                    <p><strong>Lighting:</strong> Shadows and different backgrounds can affect predictions.</p>
+                    <p><strong>Labels:</strong> The folder name <code>grenning</code> is kept exactly as given.</p>
+                    <p><strong>Limit:</strong> Results on this dataset are not verified real-world accuracy.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="section about">
+            <span class="eyebrow">04 / METHODOLOGY</span>
+            <h2>Two different ways to solve the task</h2>
+            <div class="metrics-grid">
+                <div class="panel"><h3>Classical ML: SVM</h3><p>OpenCV gets HSV/LAB color histograms and LBP texture features. StandardScaler and SVM use those values to predict a class.</p></div>
+                <div class="panel"><h3>Deep Learning: CNN</h3><p>Images are resized and passed through four convolution blocks. The CNN learns patterns during training using PyTorch.</p></div>
+            </div>
+            <a href="/api/report" class="btn btn-main">Download assignment report ↓</a>
+            <p class="scope-note"><strong>Important:</strong> This project classifies orange visual conditions, not avocado ripening stages. The original assignment requested avocados, so this is a changed project scope.</p>
+        </section>
+    </main>
+    <footer><div class="container footer-inner"><span>🍊 OrangeScope AI · Python + Flask</span><span>Learning project · For demonstration</span></div></footer>
+</body>
+</html>

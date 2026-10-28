@@ -1,0 +1,17 @@
+{
+  "image": "examples/orange_blackspot_example.jpg",
+  "actual_label_if_known": "blackspot",
+  "svm_label": "blackspot",
+  "svm_score": 0.8991,
+  "cnn_type": "cnn",
+  "cnn_label": "blackspot",
+  "cnn_softmax_score": 0.8304,
+  "candidate_roi_bbox_xywh": [
+    17,
+    15,
+    736,
+    776
+  ],
+  "annotated_image": "results/example_prediction.jpg",
+  "warning": "Scores are model confidence estimates, not calibrated probabilities. Candidate ROI is heuristic."
+}

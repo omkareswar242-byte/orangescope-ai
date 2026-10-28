@@ -1,0 +1,14 @@
+# Python caches and local environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+.pytest_cache/
+# Large source images are provided separately
+data/raw/*
+!data/raw/.gitkeep
+# Local editor settings
+.vscode/
+.idea/
+.DS_Store
